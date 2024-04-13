@@ -1,5 +1,8 @@
 import os
 import pandas as pd
+import torch
+
+from data_processor import DataProcessor
 
 def main():
     # Get the data file path
@@ -8,7 +11,9 @@ def main():
 
     # Read the csv file
     data = pd.read_csv(data_path)
-    print(data.head(15))
+
+    data_processor = DataProcessor(data['text'].values)
+    data_processor.process_data()
 
 if __name__ == "__main__":
     main()
