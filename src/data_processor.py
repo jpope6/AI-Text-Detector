@@ -3,24 +3,68 @@ import re
 from nltk.corpus import stopwords
 import numpy as np
 from sklearn.feature_extraction.text import TfidfVectorizer
+import nltk
+from scipy.sparse import hstack
+from sklearn.decomposition import TruncatedSVD
+from scipy.sparse import hstack, csr_matrix
 
 # First time you run you need to download uncomment this.
-# nltk.download('punkt')
-# nltk.download('wordnet')
+# nltk.download("punkt")
+# nltk.download("wordnet")
 # nltk.download("stopwords")
 
-STOPWORDS = stopwords.words('english')
+STOPWORDS = stopwords.words("english")
+
 
 class DataProcessor:
-    def __init__(self, data) -> None:
-        self.data = data
+    def __init__(self, data, n_components=100):
+        """
+        Initializes the DataProcessor with the given dataset and the number of components for SVD.
 
+        Args:
+        data (DataFrame): Input data containing text and additional features.
+        n_components (int): Number of components to keep during dimensionality reduction.
+        """
+        # Extracts the text data from the dataframe.
+        self.data = data["text"].values
+
+        # Vectorizes the function that processes text for parallel processing.
         self.process_corpus = np.vectorize(self.process_text)
+        # Applies text processing to all text data.
         self.processed_corpus = self.process_corpus(self.data)
 
-        # Tf-Idf Vectorizer
-        self.vectorizer = TfidfVectorizer(min_df=0.0, max_df=1.0, use_idf = True)
+        # Initializes and fits the Tf-Idf Vectorizer to transform the text data into a TF-IDF matrix.
+        self.vectorizer = TfidfVectorizer(min_df=0.0, max_df=1.0, use_idf=True)
         self.matrix = self.vectorizer.fit_transform(self.processed_corpus)
+
+        # Extracts specified features from the data, assumed to be pre-calculated.
+        other_features = data[
+            [
+                "char_count",
+                "word_count",
+                "capital_char_count",
+                "capital_word_count",
+                "punctuation_count",
+                "quoted_word_count",
+                "sent_count",
+                "unique_word_count",
+                "stopword_count",
+                "avg_word_length",
+                "avg_sent_length",
+                "unique_vs_words",
+                "stopwords_vs_words",
+            ]
+        ]
+
+        # Converts other features into a sparse matrix format to ensure compatibility.
+        other_features_sparse = csr_matrix(other_features.values)
+
+        # Stacks the TF-IDF matrix and other feature matrices horizontally (column-wise).
+        combined_features = hstack((self.matrix, other_features_sparse))
+
+        # Initializes and applies Truncated SVD to reduce dimensionality of the combined feature set.
+        self.svd = TruncatedSVD(n_components=n_components, random_state=42)
+        self.combined_features_reduced = self.svd.fit_transform(combined_features)
 
     def process_text(self, text):
         text = self.remove_punctuation(text)
@@ -28,7 +72,7 @@ class DataProcessor:
 
         # Lowercasing
         tokens = [token.lower() for token in tokens]
-        
+
         # Join the tokens back into a string
         processed_text = " ".join(tokens)
 
@@ -44,9 +88,9 @@ class DataProcessor:
     # Might get rid of this if we use punctuation as
     # a feature in our model
     def remove_punctuation(self, text):
-        text = text.translate(str.maketrans('', '', string.punctuation))
-        text = re.sub('[''""…]', '', text)
-        text = re.sub('\n', '', text)
+        text = text.translate(str.maketrans("", "", string.punctuation))
+        text = re.sub("[" '""…]', "", text)
+        text = re.sub("\n", "", text)
 
         return text
 
@@ -61,4 +105,4 @@ class DataProcessor:
     # help in certain NLP tasks and are best removed to
     # save computation and time.
     def remove_stopwords(self, tokens):
-            return [token for token in tokens if token not in STOPWORDS]
+        return [token for token in tokens if token not in STOPWORDS]
