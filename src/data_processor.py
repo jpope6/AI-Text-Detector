@@ -34,7 +34,9 @@ class DataProcessor:
         self.processed_corpus = self.process_corpus(self.data)
 
         # Initializes and fits the Tf-Idf Vectorizer to transform the text data into a TF-IDF matrix.
-        self.vectorizer = TfidfVectorizer(min_df=0.0, max_df=1.0, use_idf=True)
+        self.vectorizer = TfidfVectorizer(
+            min_df=0.0, max_df=1.0, use_idf=True, ngram_range=(1, 3)
+        )
         self.matrix = self.vectorizer.fit_transform(self.processed_corpus)
 
         # Extracts specified features from the data, assumed to be pre-calculated.

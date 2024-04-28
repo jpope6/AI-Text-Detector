@@ -5,6 +5,7 @@ from data_processor import DataProcessor
 from add_features import add_features
 from model import Model
 from scipy.sparse import hstack, csr_matrix
+from check_relevance import check_relevance
 
 
 def main():
@@ -20,6 +21,9 @@ def main():
 
     # Apply feature engineering to add additional features to the dataset.
     data_with_more_features = add_features(data)
+
+    # Check how relivant each feature is to predicting "generated"
+    # check_relevance(data_with_more_features)
 
     # Initialize the data processor with the enhanced data, perform preprocessing and feature extraction.
     data_processor = DataProcessor(data_with_more_features)

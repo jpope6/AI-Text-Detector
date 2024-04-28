@@ -69,7 +69,7 @@ def add_features(data):
     data["unique_word_count"] = data["text"].apply(count_unique_words)
     data["stopword_count"] = data["text"].apply(count_stopwords)
     data["avg_word_length"] = data["char_count"] / data["word_count"]
-    data["avg_sent_length"] = data["word_count"] / data["sent_count"]
+    # data["avg_sent_length"] = data["word_count"] / data["sent_count"]
     data["unique_vs_words"] = data["unique_word_count"] / data["word_count"]
     data["stopwords_vs_words"] = data["stopword_count"] / data["word_count"]
     return data
