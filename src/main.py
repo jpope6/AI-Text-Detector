@@ -65,7 +65,6 @@ def main():
                 "unique_word_count",
                 "stopword_count",
                 "avg_word_length",
-                "avg_sent_length",
                 "unique_vs_words",
                 "stopwords_vs_words",
             ]
