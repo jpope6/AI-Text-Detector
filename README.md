@@ -1,7 +1,46 @@
 # AI-Text-Detector
 
+## Table of Contents
+
+- [Introduction](#Introduction)
+- [Installatioin](#Installation)
+- [Running the Application](#Running-the-Application)
+- [Dataset Overview](#Dataset-Overview)
+- [Data Preparation](#Data-Preparation)
+- [Feature Engineering](#Feature-Engineering)
+- [Why Logistic Regression?](#Why-Logistic-Regression?)
+- [Results](#Results)
+
 ## Introduction
 The objective of this project is to develop a robust machine learning model capable of distinguishing between human-written and AI-generated texts. This capability is increasingly crucial as AI-generated text becomes more sophisticated, necessitating tools to verify the authenticity and origin of digital content.
+
+## Installation
+
+1. Clone the repository: 
+```bash
+git clone https://github.com/your-username/AI-Text-Detector.git
+```
+2. Navigate to the project directory:
+```bash
+cd AI-Text-Detector
+```
+3. Create and activate a virtual environment (optional but recommended): 
+```bash
+python3 -m venv venv
+source venv/bin/activate # On Linux/Mac
+venv\Scripts\activate.bat # On Windows
+```
+4. Install dependencies: 
+```bash
+pip3 install -r requirements.txt
+```
+
+## Running the Application
+- **Run the application:** Start the application by running `python src/main.py` in your terminal.
+- **Using the application:** Once the model is built, you can input text directly into the terminal.
+- **Results:** After entering your text, the application will display an output indicating the probability that the text is human-written or AI-generated.
+- **Exit:** To Exit, simply type "Exit" into the terminal.
+
 
 ## Dataset Overview
 Central to our project is a carefully compiled dataset composed entirely of essays, which forms the basis for training our model to discern between human and AI authorship. This focus on essays is particularly relevant as it encompasses a range of linguistic and stylistic nuances that challenge the differentiation capabilities of our model.
@@ -48,25 +87,12 @@ Our aim is to distinguish between human-written and AI-generated texts. One of t
 
 4. **Performance with Linear Decision Boundaries:** Despite its simplicity, Logistic Regression can perform quite well in cases where the relationship between the independent variables and the log-odds of the dependent variable is linear, which we hypothesized might be the case in our scenario given the nature of the features extracted.
 
+## Results
+![Confusion Matrix](images/confusion_matrix.png)
+A Confusion Matrix is a tabular representation of actual vs predicted class labels. It provides insights into our model’s performance by breaking down the predictions into true positives, false positives, true negatives, and false negatives. In our model's case, there were 2010 true positives to 257 false positives and 3282 true negatives to 280 false negatives. This means that our model was able to correctly predict if the text was written by human or AI 90.7% of the time.
 
+![Precision-Recall Curve](images/precision_recall_curve.png)
+A Precision-Recall curve demonstrates how our model’s precision and recall change with different threshold values. Precision measures how often our model correctly identifies AI-generated texts, while recall measures how many of the actual AI-generated texts our model successfully detects. Our diagram shows that the area under our Precision-Recall curve is 0.93, which demonstrates that our model maintains high precision (the ability to detect human vs AI written text) while also maintaining a high recall (the ability to detect most AI generated text). 
 
-## Installation
-
-1. Clone the repository: 
-```bash
-git clone https://github.com/your-username/AI-Text-Detector.git
-```
-2. Navigate to the project directory:
-```bash
-cd AI-Text-Detector
-```
-3. Create and activate a virtual environment (optional but recommended): 
-```bash
-python3 -m venv venv
-source venv/bin/activate # On Linux/Mac
-venv\Scripts\activate.bat # On Windows
-```
-4. Install dependencies: 
-```bash
-pip3 install -r requirements.txt
-```
+![ROC Curve](images/roc_curve.png)
+The Receiver Operating Characteristic (ROC) curve demonstrates how well our model distinguishes between human and AI written text by plotting the true positive rate against the false positive rate at different thresholds. Our diagram shows that the area under the ROC curve is 0.96, which indicates that when our model classifies a text as AI-generated, it is correct 96% of the time. 
