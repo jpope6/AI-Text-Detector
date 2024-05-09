@@ -1,8 +1,8 @@
 # AI-Text-Detector
+The objective of this project is to develop a robust machine learning model capable of distinguishing between human-written and AI-generated texts. This capability is increasingly crucial as AI-generated text becomes more sophisticated, necessitating tools to verify the authenticity and origin of digital content.
 
 ## Table of Contents
 
-- [Introduction](#Introduction)
 - [Installation](#Installation)
 - [Running the Application](#Running-the-Application)
 - [Dataset Overview](#Dataset-Overview)
@@ -11,9 +11,6 @@
 - [Advanced Text Features and Dimensionality Reduction](#Advanced-Text-Features-and-Dimensionality-Reduction)
 - [Why Logistic Regression?](#Why-Logistic-Regression?)
 - [Model Evaluation](#Model-Evaluation)
-
-## Introduction
-The objective of this project is to develop a robust machine learning model capable of distinguishing between human-written and AI-generated texts. This capability is increasingly crucial as AI-generated text becomes more sophisticated, necessitating tools to verify the authenticity and origin of digital content.
 
 ## Installation
 
