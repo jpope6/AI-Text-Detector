@@ -3,13 +3,14 @@
 ## Table of Contents
 
 - [Introduction](#Introduction)
-- [Installatioin](#Installation)
+- [Installation](#Installation)
 - [Running the Application](#Running-the-Application)
 - [Dataset Overview](#Dataset-Overview)
 - [Data Preparation](#Data-Preparation)
 - [Feature Engineering](#Feature-Engineering)
+- [Advanced Text Features and Dimensionality Reduction](#Advanced-Text-Features-and-Dimensionality-Reduction)
 - [Why Logistic Regression?](#Why-Logistic-Regression?)
-- [Results](#Results)
+- [Model Evaluation](#Model-Evaluation)
 
 ## Introduction
 The objective of this project is to develop a robust machine learning model capable of distinguishing between human-written and AI-generated texts. This capability is increasingly crucial as AI-generated text becomes more sophisticated, necessitating tools to verify the authenticity and origin of digital content.
@@ -77,6 +78,30 @@ Our aim is to distinguish between human-written and AI-generated texts. One of t
 - **Unique Words vs. Total Words Ratio (unique_vs_words):** It shows the proportion of unique words to total words, another indicator of lexical diversity.
 - **Stopwords vs. Total Words Ratio (stopwords_vs_words):** This measures the density of stopwords in the text, which can indicate writing style or the level of formality/informality.
 
+### Feature Engineering Evaluation
+In the process of refining our machine learning model, we conducted a feature relevance analysis to identify which variables significantly influence our target variable "generated". During this analysis, we calculated the correlation coefficients for each feature relative to the target.
+
+#### Correlation of Features
+
+- **Description:**
+  - We visualized the correlation coefficients of each feature relative to the target variable "generated" to understand their impact on the model's performance.
+  
+![Correlation of Features](images/correlation_plot.png)
+
+## Advanced Text Features and Dimensionality Reduction
+
+In our quest to enhance the predictive performance of our machine learning model, designed to differentiate between human-written and AI-generated texts, we implemented advanced techniques:
+
+### Bigram Integration
+
+We adjusted our feature extraction process by incorporating bigrams alongside unigrams using the TfidfVectorizer. This was achieved by setting the `ngram_range` parameter to `(1, 2)`, thereby instructing the vectorizer to extract and consider both single words (unigrams) and pairs of consecutive words (bigrams). This allows our model to capture nuanced linguistic patterns and contextual relationships between words, thus enhancing its classification accuracy.
+
+### Dimensionality Reduction with Truncated SVD
+
+To address the challenge of increased dimensionality resulting from the enriched feature set, we applied Truncated Singular Value Decomposition (Truncated SVD). This technique reduces the number of dimensions while preserving crucial data patterns, ensuring computational efficiency and mitigating the risk of overfitting.
+
+These enhancements represent an iterative refinement process, aimed at optimizing our model's performance and efficiency. While increasing the complexity of our feature space, we carefully evaluate the impact on model metrics such as accuracy, precision, recall, and F1-scores, ensuring robustness and generalizability to new data.
+
 ## Why Logistic Regression?
 
 1. **Probabilistic Nature:** Logistic Regression is fundamentally a probabilistic model, which means it doesn’t just predict a binary outcome but provides the probability of the occurrence of an event. This feature is particularly advantageous for our application because we aimed to not only classify texts as human or AI-generated but also quantify the likelihood (as a probability) of each classification. This helps in assessing the confidence of the predictions.
@@ -87,12 +112,17 @@ Our aim is to distinguish between human-written and AI-generated texts. One of t
 
 4. **Performance with Linear Decision Boundaries:** Despite its simplicity, Logistic Regression can perform quite well in cases where the relationship between the independent variables and the log-odds of the dependent variable is linear, which we hypothesized might be the case in our scenario given the nature of the features extracted.
 
-## Results
-![Confusion Matrix](images/confusion_matrix.png)
-A Confusion Matrix is a tabular representation of actual vs predicted class labels. It provides insights into our model’s performance by breaking down the predictions into true positives, false positives, true negatives, and false negatives. In our model's case, there were 2010 true positives to 257 false positives and 3282 true negatives to 280 false negatives. This means that our model was able to correctly predict if the text was written by human or AI 90.7% of the time.
+## Model Evaluation
 
-![Precision-Recall Curve](images/precision_recall_curve.png)
-A Precision-Recall curve demonstrates how our model’s precision and recall change with different threshold values. Precision measures how often our model correctly identifies AI-generated texts, while recall measures how many of the actual AI-generated texts our model successfully detects. Our diagram shows that the area under our Precision-Recall curve is 0.93, which demonstrates that our model maintains high precision (the ability to detect human vs AI written text) while also maintaining a high recall (the ability to detect most AI generated text). 
+- **Confusion Matrix:**
+  - A Confusion Matrix is a tabular representation of actual vs predicted class labels. It provides insights into our model’s performance by breaking down the predictions into true positives, false positives, true negatives, and false negatives. In our model's case, there were 2010 true positives to 257 false positives and 3282 true negatives to 280 false negatives. This means that our model was able to correctly predict if the text was written by human or AI 90.7% of the time.
+  ![Confusion Matrix](images/confusion_matrix.png)
 
-![ROC Curve](images/roc_curve.png)
-The Receiver Operating Characteristic (ROC) curve demonstrates how well our model distinguishes between human and AI written text by plotting the true positive rate against the false positive rate at different thresholds. Our diagram shows that the area under the ROC curve is 0.96, which indicates that when our model classifies a text as AI-generated, it is correct 96% of the time. 
+- **Precision-Recall Curve:**
+  - A Precision-Recall curve demonstrates how our model’s precision and recall change with different threshold values. Precision measures how often our model correctly identifies AI-generated texts, while recall measures how many of the actual AI-generated texts our model successfully detects. Our diagram shows that the area under our Precision-Recall curve is 0.93, which demonstrates that our model maintains high precision (the ability to detect human vs AI written text) while also maintaining a high recall (the ability to detect most AI generated text).
+  ![Precision-Recall Curve](images/precision_recall_curve.png)
+
+- **ROC Curve:**
+  - The Receiver Operating Characteristic (ROC) curve demonstrates how well our model distinguishes between human and AI written text by plotting the true positive rate against the false positive rate at different thresholds. Our diagram shows that the area under the ROC curve is 0.96, which indicates that when our model classifies a text as AI-generated, it is correct 96% of the time.
+  ![ROC Curve](images/roc_curve.png)
+
