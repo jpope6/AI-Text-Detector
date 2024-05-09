@@ -1,5 +1,55 @@
 # AI-Text-Detector
 
+## Introduction
+The objective of this project is to develop a robust machine learning model capable of distinguishing between human-written and AI-generated texts. This capability is increasingly crucial as AI-generated text becomes more sophisticated, necessitating tools to verify the authenticity and origin of digital content.
+
+## Dataset Overview
+Central to our project is a carefully compiled dataset composed entirely of essays, which forms the basis for training our model to discern between human and AI authorship. This focus on essays is particularly relevant as it encompasses a range of linguistic and stylistic nuances that challenge the differentiation capabilities of our model.
+The dataset can be found [here](https://www.kaggle.com/datasets/sunilthite/llm-detect-ai-generated-text-dataset).
+
+## Data Preparation
+
+The preprocessing of essays is a crucial step in standardizing the text for machine learning applications, ensuring that our model is trained on data that accurately represents the characteristics we aim to analyze. The initial phase of preprocessing involved cleaning the essays to remove extraneous characters and formatting. This process was meticulously executed using a custom method to strip out punctuation and unnecessary whitespace, which could otherwise skew the analysis.
+
+### Processing Steps
+
+1. **Removing Punctuation:** Punctuation marks were removed to standardize the text. This step was carefully considered, as punctuation could be a feature in future models. However, for the current model framework, simplifying the text by removing punctuation helps focus on the textual content.
+2. **Tokenization:** The cleaned text was then tokenized, splitting it into manageable units or words. This step is critical as it transforms the text into a format that our machine learning algorithms can interpret effectively.
+3. **Lowercasing:** All tokens were converted to lowercase to ensure uniformity, eliminating any discrepancies that case differences might introduce.
+4. **Stopwords Removal:** Commonly used words, or stopwords, which typically do not contribute to the meaning of the text, such as 'I', 'am', 'there', were removed. This reduces the dimensionality of the data and focuses the model's learning on words with more substantive predictive power.
+5. **Reassembly:** The processed tokens were reassembled into a continuous string, preparing them for vectorization.
+
+## Feature Engineering
+
+Our aim is to distinguish between human-written and AI-generated texts. One of the critical initial steps was to enrich our dataset with features that could potentially reveal significant differences in writing styles between the two categories. This process, known as feature engineering, involved the creation of a variety of textual features derived from the raw text data. We implemented this in the Python function `add_features(data)`, designed to systematically augment the dataset with new, informative features.
+
+### Breakdown of Feature Engineering Steps
+
+- **Character Count (char_count):** This feature measures the total number of characters in each text, providing a basic size metric that reflects text length.
+- **Word Count (word_count):** We calculated the total number of words per text. This feature helps in understanding the verbosity or conciseness of the text.
+- **Capital Character Count (capital_char_count):** By counting the number of uppercase characters, this feature could indicate the use of emphasis or formal writing styles.
+- **Capital Word Count (capital_word_count):** This counts the number of words that are entirely in uppercase, which might be indicative of specific stylistic features or emphases in the text.
+- **Punctuation Count (punctuation_count):** We counted the occurrences of punctuation marks, as they can reflect complexity and the structure of the sentences.
+- **Quoted Word Count (quoted_word_count):** This counts the number of words within quotes, which could highlight dialogue or references in texts.
+- **Sentence Count (sent_count):** By counting the number of sentences, this feature helps in understanding text composition in terms of sentence structuring.
+- **Unique Word Count (unique_word_count):** This represents the number of unique words used, shedding light on lexical diversity.
+- **Stopword Count (stopword_count):** Counting common stopwords can provide insights into the filler or functional components of the text.
+- **Average Word Length (avg_word_length):** This feature is calculated as the ratio of char_count to word_count, providing an average size of the words used, which can reflect on the complexity or readability of the text.
+- **Unique Words vs. Total Words Ratio (unique_vs_words):** It shows the proportion of unique words to total words, another indicator of lexical diversity.
+- **Stopwords vs. Total Words Ratio (stopwords_vs_words):** This measures the density of stopwords in the text, which can indicate writing style or the level of formality/informality.
+
+## Why Logistic Regression?
+
+1. **Probabilistic Nature:** Logistic Regression is fundamentally a probabilistic model, which means it doesn’t just predict a binary outcome but provides the probability of the occurrence of an event. This feature is particularly advantageous for our application because we aimed to not only classify texts as human or AI-generated but also quantify the likelihood (as a probability) of each classification. This helps in assessing the confidence of the predictions.
+
+2. **Interpretability:** One of the standout features of Logistic Regression is its interpretability. Each feature's coefficient indicates the strength and direction of its relationship with the dependent variable, in this case, the likelihood of a text being AI-generated. This is valuable in a domain like ours where understanding what influences the model's predictions can provide insights into how AI and human texts differ.
+
+3. **Efficiency:** Logistic Regression is computationally not intensive, making it an excellent choice for high-dimensional datasets, especially after feature engineering and dimensionality reduction via methods like Truncated SVD. This efficiency is crucial in maintaining manageable computation times and resource usage.
+
+4. **Performance with Linear Decision Boundaries:** Despite its simplicity, Logistic Regression can perform quite well in cases where the relationship between the independent variables and the log-odds of the dependent variable is linear, which we hypothesized might be the case in our scenario given the nature of the features extracted.
+
+
+
 ## Installation
 
 1. Clone the repository: 
